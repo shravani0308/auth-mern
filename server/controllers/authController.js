@@ -139,7 +139,7 @@ await user.save();
 
 const mailOption ={
             from:process.env.SENDER_EMAIL,
-            to:user.email,
+            to:email,
             subject:'Account verfication OTP ',
             text:`your OTP is ${otp}. Verify your account using this OTP`
          }
