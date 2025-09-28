@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from "react"
+import { createContext,  useState } from "react"
+import axios from 'axios'
+import{toast} from 'react-toastify'
 
 export const AppContent = createContext()
 
@@ -9,17 +11,27 @@ export const AppContextProvider =(props)=>{
   const[userData,setuserData]=useState(false)
 
 
-  
+  const getUserData=async ()=>{
+   try{
+     const {data}= await axios.get(backendUrl + '/api/user/data')
+     data.success ? setuserData(data.userData):toast.error(data.message)
+   }
+    catch(error){
+    toast.error(error.message)
+   }
+   
+  }
+
    const value={
      backendUrl,
      isLoggedin,setIsLoggedin,
-     userData,setuserData
-
+     userData,setuserData,
+     getUserData
    }
 
     return(
         <AppContent.Provider value={value}>
-{ props.children}
+         { props.children}
         </AppContent.Provider>
     )
 }
