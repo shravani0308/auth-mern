@@ -10,10 +10,13 @@ export const AppContextProvider =(props)=>{
   const[isLoggedin,setIsLoggedin]=useState(false)
   const[userData,setuserData]=useState(false)
 
+  // Ensure cookies (e.g., auth token) are sent with every request
+  axios.defaults.withCredentials = true;
+
 
   const getUserData=async ()=>{
    try{
-     const {data}= await axios.get(backendUrl + '/api/user/data')
+    const {data}= await axios.get(backendUrl + '/api/user/data', { withCredentials: true })
      data.success ? setuserData(data.userData):toast.error(data.message)
    }
     catch(error){
