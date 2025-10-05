@@ -12,7 +12,7 @@ const app =express();
 const port =process.env.PORT || 4000;
 connectDB();
 
-const allowOrigins= ['https://authify-mern.onrender.com']
+const allowOrigins= ['*']
 
 app.use(express.json());
 app.use(cookieParser());
