@@ -18,7 +18,14 @@ export const AppContextProvider =(props)=>{
    try{
      const {data}= await axios.get(backendUrl + '/api/user/data')
      data.success ? setuserData(data.userData):toast.error(data.message)
-   }
+        
+     if (data.success) {
+       setuserData(data.userData);
+       setIsLoggedin(true);
+     } else {
+       toast.error(data.message);
+       setIsLoggedin(false);
+     }}
     catch(error){
     toast.error(error.message)
    }
@@ -27,7 +34,7 @@ export const AppContextProvider =(props)=>{
 
   useEffect(()=>{
     getUserData();
-  })
+  }, [])
 
    const value={
      backendUrl,
