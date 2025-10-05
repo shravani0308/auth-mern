@@ -6,18 +6,19 @@ import connectDB from './config/mongodb.js';
 import authRouter from './routes/authRoutes.js'
 import userRouter from './routes/userRoutes.js';
 
-
-
 const app =express();
 const port =process.env.PORT || 4000;
 connectDB();
 
-const allowOrigins= ['*']
-
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({origin:allowOrigins, credentials:true}));
-
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow all origins
+        callback(null, true);
+    },
+    credentials: true
+}));
 
 // API Endpoints
 app.get('/',(req,res)=>{
