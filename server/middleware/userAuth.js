@@ -12,7 +12,7 @@ const userAuth = async (req,res,next)=>{
  
     const tokenDecode = jwt.verify(token,process.env.Jwt_SECRET);
     if(tokenDecode.id){
-        req.user={userId : tokenDecode.id}
+        req.body.userId = tokenDecode.id
     }
     else{
       console.log("Auth failed: token decoded without id", tokenDecode)
@@ -22,7 +22,6 @@ const userAuth = async (req,res,next)=>{
     next();
    }
    catch(error){
-     console.error("JWT verify error:", error && error.message ? error.message : error)
      return res.json({success:false,message: 'Not Authorized. Login Again'})
 
    }
