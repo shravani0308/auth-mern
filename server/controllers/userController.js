@@ -2,7 +2,12 @@ import userModel  from "../models/userModel.js";
 
 export const getUserData =async(req,res)=>{
     try{
-      const {userId}=req.user;
+      // Get userId from req.user (set by userAuth middleware)
+      const userId = req.user.id || req.user.userId;
+      
+      if (!userId) {
+        return res.json({success:false, message:"User ID not found in request"});
+      }
 
       const user = await userModel.findById(userId);
 
@@ -17,6 +22,7 @@ export const getUserData =async(req,res)=>{
 
 
     }catch(error){
+        console.log("Error in getUserData:", error);
         res.json({success:false,message:error.message})
     }
 }

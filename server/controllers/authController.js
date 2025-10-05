@@ -33,18 +33,19 @@ export const register = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
+    // Generate OTP for email verification
+    const otp = String(Math.floor(100000 + Math.random() * 900000));
+
     // ✅ Send welcome email here
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: email,
       subject: 'Account Verification OTP',
-      // text: `Hi ${name},\n\nWelcome to GreatStarts! Your account has been successfully created with the email: ${email}.\n\nThanks for joining us!`,
-      html:EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
+      html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
     };
 
-const info = await transporter.sendMail(mailOptions);
-console.log("✅ Email sent:", info.response);
-
+    const info = await transporter.sendMail(mailOptions);
+    console.log("✅ Email sent:", info.response);
 
     return res.json({ success: true });
   } catch (error) {
