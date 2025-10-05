@@ -40,9 +40,11 @@ export const register = async (req, res) => {
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: email,
-      subject: 'Account Verification OTP',
-      html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
-    };
+      subject: 'Welcome to GreatStarts! 🎉',
+     text:`Welcome to GreatStarts! 🎉  
+Your account has been successfully created using the email ID: ${email}.  
+We’re excited to have you on board!
+`    };
 
     const info = await transporter.sendMail(mailOptions);
     console.log("✅ Email sent:", info.response);
@@ -197,8 +199,8 @@ export const sendVerifyOtp =async (req,res)=>{
 
 //verfiy the email using otp
 export const  verifyEmail = async (req,res)=>{
-  const {userId,otp}= req.body;
-
+  const {otp}= req.body;
+ const userId= req.user.id || req.user.userId;
   if(!userId  || !otp){
     return res.json({success:false, message:'Missing Details'})
   }
